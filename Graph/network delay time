@@ -1,0 +1,48 @@
+//https://leetcode.com/problems/network-delay-time/description/
+class Solution {
+public:
+    int networkDelayTime(vector<vector<int>>& tm, int n, int k) {
+        vector<pair<int,int>>adj[n+1];
+        int e=tm.size();
+        for(int i=0;i<e;i++){
+            adj[tm[i][0]].push_back({tm[i][1],tm[i][2]}); 
+        }
+
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
+        pq.push({0,k});
+        vector<int>t(n+1,1e9),vis(n+1,0);
+        t[k]=0; 
+
+        while(!pq.empty()){
+            int node=pq.top().second;
+            int wt=pq.top().first;
+            pq.pop();
+
+            if(vis[node]){
+                continue;
+            }
+            vis[node]=1;
+
+            for(auto it:adj[node]){
+                if(!vis[it.first]){
+                    if(t[it.first]>=wt+it.second){
+                        t[it.first]=wt+it.second;
+                        pq.push({wt+it.second,it.first});
+                    }
+
+                }
+            }
+        }
+        bool flag=0;
+        for(int i=1;i<=n;i++){
+            if(t[i]==1e9){
+                flag=1;
+            }
+        }
+        if(flag){
+            return -1;
+        }else{
+            return *max_element(t.begin()+1,t.end());
+        }   
+    }
+};
