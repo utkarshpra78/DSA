@@ -1,0 +1,44 @@
+//https://leetcode.com/problems/pacific-atlantic-water-flow/description/
+class Solution {
+public:
+    void dfs(int x,int y,int n,int m,vector<vector<int>>&vis,vector<vector<int>>&heights){
+        vis[x][y]=1;
+
+        int fx[]={+1,-1,+0,+0};
+        int fy[]={+0,+0,+1,-1};
+        for(int i=0;i<4;i++){
+            int nx=x+fx[i];
+            int ny=y+fy[i];
+            if(nx>=0 && nx<n && ny>=0 && ny<m && !vis[nx][ny] && heights[nx][ny]>=heights[x][y]){
+                dfs(nx,ny,n,m,vis,heights);
+            }
+        }
+    }
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        int n=heights.size();
+        int m=heights[0].size();
+        vector<vector<int>>vis1(n,vector<int>(m,0));
+        vector<vector<int>>vis2(n,vector<int>(m,0));
+        for(int i=0;i<n;i++){
+            dfs(i,0,n,m,vis1,heights);
+            dfs(i,m-1,n,m,vis2,heights);
+        }
+
+        for(int i=0;i<m;i++){
+            dfs(0,i,n,m,vis1,heights);
+            dfs(n-1,i,n,m,vis2,heights);
+        }
+
+        vector<vector<int>>ans; 
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(vis1[i][j]==1 && vis2[i][j]==1){
+                    vector<int>u;
+                    u.push_back(i);u.push_back(j);
+                    ans.push_back(u);
+                }
+            }
+        }
+        return ans;
+    }
+};
