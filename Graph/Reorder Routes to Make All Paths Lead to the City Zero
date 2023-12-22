@@ -1,0 +1,31 @@
+//https://leetcode.com/problems/reorder-routes-to-make-all-paths-lead-to-the-city-zero/description/
+
+class Solution {
+public:
+    int count=0;
+
+    void dfs(int node,vector<int>&vis,vector<int>adj[]){
+        vis[abs(node)]=1;
+
+        for(auto it:adj[abs(node)]){
+            if(!vis[abs(it)]){
+                if(it>0){
+                   count++;
+                }
+                dfs(abs(it),vis,adj); 
+            }   
+        }
+    }
+ 
+    int minReorder(int n, vector<vector<int>>& connections) {
+        vector<int>adj[n+1];
+        for(auto it:connections){
+            adj[it[0]+1].push_back(it[1]+1);
+            adj[it[1]+1].push_back(-it[0]-1);
+        }
+        vector<int>vis(n+1);
+        dfs(1,vis,adj);
+        return count;
+
+    }
+};
