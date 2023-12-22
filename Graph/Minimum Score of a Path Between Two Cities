@@ -1,0 +1,31 @@
+//https://leetcode.com/problems/minimum-score-of-a-path-between-two-cities/description/
+
+class Solution {
+public:
+    int dfs(int node,vector<pair<int,int>>adj[],vector<int>&vis){
+        vis[node]=1; 
+        int mini=1e9;
+        for(auto it:adj[node]){
+            mini=min(mini,it.second);
+            if(!vis[it.first]){
+                vis[it.first]=1;
+                mini=min(mini,dfs(it.first,adj,vis));
+            }
+        } 
+        return mini;
+    }
+    int minScore(int n, vector<vector<int>>& roads) {
+        vector<pair<int,int>>adj[n+1];
+        int mini=INT_MAX;
+        for(auto it:roads){
+            int w1=it[0];
+            int w2=it[1];
+            int wt=it[2]; 
+            adj[w1].push_back({w2,wt});
+            adj[w2].push_back({w1,wt});
+        } 
+        vector<int>vis(n+1,0);
+        return dfs(1,adj,vis);  
+    }
+};
+ 
