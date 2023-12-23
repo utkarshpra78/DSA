@@ -1,0 +1,36 @@
+//https://leetcode.com/problems/minimum-time-to-collect-all-apples-in-a-tree/description/
+class Solution {
+public: 
+    int dfs(int node,vector<int>adj[],vector<int>&vis,vector<bool>&apple){
+        vis[node]=1;
+        int c=0;
+        if(apple[node]){
+            c=2;
+        }
+        int m=0;
+        for(auto it:adj[node]){
+            if(!vis[it]){
+                m+=(dfs(it,adj,vis,apple));
+            }
+        }
+        if(node==0){
+            return m;
+        }
+        if(m!=0){
+            return m+2;
+        }else{
+            return c;
+        }
+    }
+
+    int minTime(int n, vector<vector<int>>& edges, vector<bool>& apple) {
+        vector<int>adj[n];
+        for(auto it:edges){
+            adj[it[0]].push_back(it[1]);
+            adj[it[1]].push_back(it[0]);
+        }
+
+        vector<int>vis(n,0);
+        return dfs(0,adj,vis,apple);
+    }
+};
