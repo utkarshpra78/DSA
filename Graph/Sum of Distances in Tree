@@ -1,4 +1,6 @@
 //https://leetcode.com/problems/sum-of-distances-in-tree/description/
+//ans(x)=ans(y)+count(y)-count(x)
+//count(y)=n-count(x)
 class Solution {
 public:
     int ans;
