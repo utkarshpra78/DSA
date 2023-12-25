@@ -1,0 +1,30 @@
+//https://leetcode.com/problems/decode-ways/description/?envType=daily-question&envId=2023-12-25
+class Solution {
+public:
+    int f(int ind,string s,vector<int>&dp){
+        if(s[ind]=='0'){
+            return 0;
+        }
+        if(ind>=s.size()-1){
+            return 1;
+        }
+
+        if(dp[ind]!=-1){
+            return dp[ind];
+        }
+
+        string a=s.substr(ind,2);
+        int x=f(ind+1,s,dp);
+        if(std::stoi(a)<=26 ){
+            x+=f(ind+2,s,dp);
+        }
+        return dp[ind]=x; 
+    }
+    int numDecodings(string s) {
+        int n=s.size();
+        vector<int>dp(n,-1);
+        return f(0,s,dp);
+    }
+};
+
+//METHOD 2
