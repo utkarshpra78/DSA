@@ -1,0 +1,33 @@
+//https://leetcode.com/problems/longest-cycle-in-a-graph/description/
+class Solution {
+public:
+    int ans=-1;
+    void dfs(int node,vector<int>&edges,vector<int>&vis,map<int,int>&mpp){
+        vis[node]=1;
+        int no=edges[node];
+        if(no==-1){
+            return;
+        }
+
+        if(!vis[no]){
+            mpp[no]=mpp[node]+1;
+            dfs(no,edges,vis,mpp);
+        }else if(mpp[no]!=0){
+            ans=max(ans,mpp[node]-mpp[no]+1); 
+        }
+    }
+
+    int longestCycle(vector<int>& edges) {
+        int n=edges.size();
+        vector<int>vis(n,0);
+
+        for(int i=0;i<n;i++){
+            if(!vis[i]){ 
+                map<int,int>mpp;
+                mpp[i]=1;
+                dfs(i,edges,vis,mpp);
+            }
+        }
+        return ans;
+    }
+};
