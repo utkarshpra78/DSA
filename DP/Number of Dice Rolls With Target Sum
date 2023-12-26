@@ -1,0 +1,29 @@
+//https://leetcode.com/problems/number-of-dice-rolls-with-target-sum/description/?envType=daily-question&envId=2023-12-26
+class Solution {
+public:
+    //n==30;k==30;taget==1000
+    const int N=1e9+7; 
+    int f(int n,int k,int target,vector<vector<int>>&dp){
+        if(n==0 && target==0){
+            return 1;
+        }
+        if(n==0 || target<=0){
+            return 0;
+        }
+
+        if(dp[n][target]!=-1){
+            return dp[n][target];
+        }
+        int ways=0;
+        for(int i=1;i<=k;i++){
+            ways=(ways+f(n-1,k,target-i,dp))%N;
+        }
+        return dp[n][target]=ways%N;
+    }
+    int numRollsToTarget(int n, int k, int target) {
+        vector<vector<int>>dp(n+1,vector<int>(target+1,-1));
+         return f(n,k,target,dp);
+        // return dp[n][target];
+        
+    }
+};
