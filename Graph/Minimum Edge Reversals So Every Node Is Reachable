@@ -1,0 +1,49 @@
+//https://leetcode.com/problems/minimum-edge-reversals-so-every-node-is-reachable/description/
+class Solution {
+public:
+    int dfs(int node,vector<pair<int,int>>adj[],vector<int>&vis){
+        vis[node]=1;
+        int c=0;
+        for(auto it:adj[node]){
+            if(!vis[it.first]){
+                if(it.second){
+                   c+=(dfs(it.first,adj,vis));
+                }else{
+                   c+=(dfs(it.first,adj,vis))+1;
+                }
+            }   
+        }
+        return c;
+    }
+    
+    void fds(int node,vector<pair<int,int>>adj[],vector<int>&vis,vector<int>&a){
+        vis[node]=1;
+        for(auto it:adj[node]){
+            if(!vis[it.first]){
+                if(it.second){
+                    a[it.first]=a[node]+1;
+                    fds(it.first,adj,vis,a);
+                }else{
+                    a[it.first]=a[node]-1;
+                    fds(it.first,adj,vis,a);
+                }
+            }
+        }
+    }
+
+    vector<int> minEdgeReversals(int n, vector<vector<int>>& edges) {
+        vector<pair<int,int>>adj[n];
+        for(auto it:edges){
+            adj[it[0]].push_back({it[1],1});
+            adj[it[1]].push_back({it[0],0});
+        }
+        vector<int>vis(n,0);
+        int u=dfs(0,adj,vis);
+        for(int i=0;i<n;i++)vis[i]=0;
+        vector<int>a(n,0);
+        a[0]=u;
+        fds(0,adj,vis,a);
+        return a;
+
+    }
+};
