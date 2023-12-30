@@ -20,3 +20,30 @@ public:
         return result;
     }
 };
+
+______________________________________________________________________________________________________________________________
+
+//optimise one with one vector
+//https://leetcode.com/problems/all-paths-from-source-to-target/description/
+
+class Solution {
+public:
+    void dfs(vector<vector<int>>& graph,vector<vector<int>>&result,vector<int>&ds,int s){
+        ds.push_back(s);
+        if(s == graph.size()-1){
+            result.push_back(ds);
+        }
+        for(auto it:graph[s]){
+            dfs(graph,result,ds,it);
+        }
+        ds.pop_back();
+    }
+
+
+    vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& graph) {
+        vector<vector<int>>result;
+        vector<int>ds;
+        dfs(graph,result,ds,0);
+        return result;
+    }
+};
