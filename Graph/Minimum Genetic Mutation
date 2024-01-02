@@ -1,0 +1,37 @@
+//https://leetcode.com/problems/minimum-genetic-mutation/description/
+//433. Minimum Genetic Mutation
+
+class Solution {
+public: 
+    int minMutation(string startGene, string endGene, vector<string>& bank) {
+        map<string,int>mpp;
+        string m="ACGT"; 
+        queue<pair<string,int>>q;
+        q.push({startGene,0});
+        mpp[startGene]=1;
+    
+        while(!q.empty()){
+            string d=q.front().first;
+            int count=q.front().second;
+            int n=q.size();
+            q.pop();
+            if(d==endGene){
+                return count;
+            }
+
+            for(int i=0;i<4;i++){
+                for(int j=0;j<8;j++){
+                    string k=d;
+                    k[j]=m[i];
+                    if(std::find(bank.begin(),bank.end(),k)!=bank.end()){
+                        if(!mpp[k]){
+                            mpp[k]=1;
+                            q.push({k,count+1});
+                        } 
+                    } 
+                }
+            } 
+        }
+        return -1; 
+    }
+};
