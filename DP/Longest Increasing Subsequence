@@ -1,0 +1,34 @@
+//https://leetcode.com/problems/longest-increasing-subsequence/description/?envType=daily-question&envId=2024-01-05
+
+//300. Longest Increasing Subsequence
+
+
+class Solution {
+public: 
+    int f(int ind,int lastid,vector<int>&v,int n,vector<vector<int>>&dp){
+        if(ind>=n){
+            return 0;
+        }
+
+        if(lastid!=-1 && dp[ind][lastid]!=-1){
+            return dp[ind][lastid];
+        } 
+
+        int np=f(ind+1,lastid,v,n,dp); 
+        int p=0;
+        if(lastid ==-1 || v[ind]>v[lastid]){
+           p=1+f(ind+1,ind,v,n,dp);
+        }
+        if(lastid!=-1){
+            return dp[ind][lastid]=max(p,np);
+        }else{
+            return max(p,np);
+        }
+        
+    }
+    int lengthOfLIS(vector<int>& nums) {
+        int n=nums.size();
+        vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
+        return f(0,-1,nums,n,dp);
+    }
+};
