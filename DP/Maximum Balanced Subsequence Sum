@@ -1,0 +1,58 @@
+//https://leetcode.com/problems/maximum-balanced-subsequence-sum/description/
+//2926. Maximum Balanced Subsequence Sum
+
+
+class Solution {
+public:
+    unordered_map<string, long long> mp; //For memoization
+    long long solve(int i, int prev, vector<int>& nums) {
+        if(i >= nums.size()) {
+            return 0;
+        }
+
+        string key = to_string(i) + "_" + to_string(prev);
+        if(mp.find(key) != mp.end()) {
+            return mp[key];
+        }
+
+        long long taken = INT_MIN;
+
+        if(prev == -1 || nums[i] - i >= nums[prev] - prev) {
+            taken = nums[i] + solve(i+1, i, nums);
+        }
+        
+        long long not_taken = solve(i+1, prev, nums);
+        return mp[key] = max<long long>(taken, not_taken);
+    }
+
+    long long maxBalancedSubsequenceSum(vector<int>& nums) {
+        int maxEl = *max_element(begin(nums), end(nums));
+        if(maxEl <= 0) {
+            return maxEl;
+        }
+        return solve(0, -1, nums);
+    }
+};
+
+
+__________________________________________________________________________________________________
+
+class Solution {
+public:
+    long long maxBalancedSubsequenceSum(vector<int>& nums) {
+        int n=nums.size();
+        vector<long long> dp(n);
+        for(int i=0;i<n;i++){
+            dp[i]=nums[i];
+        }
+
+        for(int i=0;i<n;i++){
+            for(int j=i-1;j>=0;j--){
+                if(nums[j]-j<=nums[i]-i){
+                    dp[i]=max(dp[i],dp[j]+nums[i]);
+                }
+            }
+        }
+        return *max_element(dp.begin(),dp.end());
+    }
+};
