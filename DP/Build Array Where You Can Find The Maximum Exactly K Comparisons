@@ -1,0 +1,39 @@
+//https://leetcode.com/problems/build-array-where-you-can-find-the-maximum-exactly-k-comparisons/description/
+
+//1420. Build Array Where You Can Find The Maximum Exactly K Comparisons
+
+class Solution {
+public:
+    const int N=1e9+7;
+    int dp[60][60][110];
+    int f(int ind,int &m,int k,int maxi,int &n){
+        if(ind==n-1){
+            if(k==0){
+                return 1;
+            }return 0;
+        }
+        if(k<0){
+            return 0;
+        }
+        if(dp[ind][k][maxi]!=-1){
+            return dp[ind][k][maxi];
+        }
+        long long c=0;
+        for(int i=1;i<=m;i++){
+            if(i>=maxi){
+                (c+=f(ind+1,m,k,maxi,n))%N;
+            }else{
+                (c+=f(ind+1,m,k-1,i,n))%N;
+            }
+        }
+        return dp[ind][k][maxi]=c%N;
+    }
+    int numOfArrays(int n, int m, int k) {
+        long long c=0;
+        memset(dp,-1,sizeof(dp));
+        for(int i=1;i<=m;i++){
+            (c+=f(0,m,k-1,i,n))%N;
+        }
+        return c%N;
+    }
+};
