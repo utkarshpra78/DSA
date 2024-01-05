@@ -1,4 +1,4 @@
-//https://leetcode.com/problems/longest-increasing-subsequence/description/?envType=daily-question&envId=2024-01-05
+https://leetcode.com/problems/longest-increasing-subsequence/
 
 //300. Longest Increasing Subsequence
 
@@ -30,5 +30,24 @@ public:
         int n=nums.size();
         vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
         return f(0,-1,nums,n,dp);
+    }
+};
+
+______________________________________________________________________________________________________________
+
+
+class Solution {
+public:  
+    int lengthOfLIS(vector<int>& nums) {
+        int n=nums.size();
+        vector<int>dp(n,1);
+        for(int i=0;i<n;i++){
+            for(int j=i-1;j>=0;j--){
+                if(nums[j]<nums[i]){
+                    dp[i]=max(dp[i],dp[j]+1);
+                }
+            }
+        }
+        return *max_element(dp.begin(),dp.end());
     }
 };
