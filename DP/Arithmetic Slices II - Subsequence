@@ -1,0 +1,30 @@
+//https://leetcode.com/problems/arithmetic-slices-ii-subsequence/description/
+
+//446. Arithmetic Slices II - Subsequence
+
+class Solution {
+public:
+    int numberOfArithmeticSlices(vector<int>& nums) {
+        int n=nums.size();
+        vector<map<int,int>>vmpp(n);
+        int ans=0;
+        for(int i=0;i<n;i++){
+            for(int j=i-1;j>=0;j--){
+                long long diff=(long)nums[i]-nums[j];
+                if(diff>INT_MAX || diff<INT_MIN){
+                    continue;
+                }
+                diff=(int)diff;
+                if(vmpp[j].find(diff)!=vmpp[j].end()){
+                    int a=vmpp[j][diff];
+                    ans+=a;
+                    vmpp[i][diff]+=(1+vmpp[j][diff]);
+                }
+                else{
+                    vmpp[i][diff]++;
+                }
+            }
+        }
+        return ans;
+    }
+};
