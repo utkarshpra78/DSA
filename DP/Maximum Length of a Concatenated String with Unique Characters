@@ -1,0 +1,56 @@
+//https://leetcode.com/problems/maximum-length-of-a-concatenated-string-with-unique-characters/description/
+
+//1239. Maximum Length of a Concatenated String with Unique Characters
+class Solution {
+public:
+    int maxi=0;
+    void f(int ind,string s,vector<string>&arr,int &n){
+        if(ind==n){
+            int k=s.size();
+            maxi=max(maxi,k);
+            return;
+        }
+        f(ind+1,s,arr,n);
+        map<char,int>mpp;
+        bool a=1;
+        for(auto it:arr[ind]){
+            mpp[it]++;
+            if(mpp[it]>=2){
+                a=0;
+            }
+        }
+        for(auto it:s){
+            mpp[it]++;
+            if(mpp[it]>=2){
+                a=0;
+            }
+        }
+        if(a){
+            string m=s+arr[ind];
+            f(ind+1,m,arr,n);
+        }
+
+    }
+    
+    int maxLength(vector<string>& abc) {
+        int m=abc.size();
+        vector<string>arr;
+        for(int i=0;i<m;i++){
+            map<int,int>mpp;
+            bool a=1;
+            for(auto it:abc[i]){
+                mpp[it]++;
+                if(mpp[it]>=2){
+                    a=0;
+                }
+            }
+            if(a){
+                arr.push_back(abc[i]);
+            }
+        }
+        int n=arr.size();
+        string s="";
+        f(0,s,arr,n);
+        return maxi;
+    }
+};
