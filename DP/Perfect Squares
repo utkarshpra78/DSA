@@ -1,0 +1,29 @@
+//https://leetcode.com/problems/perfect-squares/description/
+
+//279. Perfect Squares
+
+class Solution {
+public:
+    int dp[10005];
+    int f(int n){
+        if(n==0){
+            return 1;
+        }
+        if(n<0){
+            return INT_MAX;
+        }
+        if(dp[n]!=-1){
+            return dp[n];
+        }
+        int m=sqrt(n);
+        int mini=INT_MAX;
+        for(int i=1;i<=m;i++){
+            mini=min(mini,1+f(n-i*i));
+        }
+        return dp[n]=mini;
+    }
+    int numSquares(int n) {
+        memset(dp,-1,sizeof(dp));
+        return f(n)-1;
+    }
+};
