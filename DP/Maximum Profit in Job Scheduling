@@ -1,0 +1,33 @@
+//https://leetcode.com/problems/maximum-profit-in-job-scheduling/description/?envType=daily-question&envId=2024-01-06
+
+//1235. Maximum Profit in Job Scheduling
+class Solution {
+public:
+    int dp[50001];
+    int f(int ind,vector<int>& st,vector<vector<int>>&jobs,int &n){
+        if(ind==n){
+            return 0;
+        }
+        if(dp[ind]!=-1){
+            return dp[ind];
+        }
+        int notpick=f(ind+1,st,jobs,n);
+        int pick=0; 
+        auto it=lower_bound(st.begin(),st.end(),jobs[ind][1])-st.begin();
+        pick=jobs[ind][2]+f(it,st,jobs,n); 
+        return dp[ind]=max(pick,notpick);
+    }
+    int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) {
+        int n=profit.size();
+        vector<vector<int>>jobs(n);
+        for(int i=0;i<n;i++){
+            jobs[i]={startTime[i],endTime[i],profit[i]};
+        }
+        sort(jobs.begin(),jobs.end());
+        for(int i=0;i<n;i++){
+            startTime[i]=jobs[i][0];
+        }
+        memset(dp,-1,sizeof(dp));
+        return f(0,startTime,jobs,n);
+    }
+};
