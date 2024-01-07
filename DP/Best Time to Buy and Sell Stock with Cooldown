@@ -1,0 +1,28 @@
+//https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/description/
+
+//309. Best Time to Buy and Sell Stock with Cooldown
+
+
+class Solution {
+public:
+    int dp[5005][5];
+    int f(int ind,int ck,vector<int>&v){
+        if(ind>=v.size()){
+            return 0;
+        }
+        if(dp[ind][ck]!=-1){
+            return dp[ind][ck];
+        }
+        int pf=0;
+        if(ck){
+            pf=max(-v[ind]+f(ind+1,0,v),f(ind+1,1,v));
+        }else{
+            pf=max(v[ind]+f(ind+2,1,v),f(ind+1,0,v));
+        }
+        return dp[ind][ck]=pf;
+    }
+    int maxProfit(vector<int>& prices) {
+        memset(dp,-1,sizeof(dp));
+        return f(0,1,prices);
+    }
+};
