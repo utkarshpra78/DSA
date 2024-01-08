@@ -1,0 +1,32 @@
+//https://leetcode.com/problems/reducing-dishes/description/
+
+//1402. Reducing Dishes
+
+class Solution {
+public:
+    int dp[600][600];
+    int f(int ind,int count,vector<int>&v){
+        if(ind==v.size()){
+            return 0;
+        }
+        if(dp[ind][count]!=-1){
+            return dp[ind][count];
+        }
+        int np=f(ind+1,count,v);
+        int p=v[ind]*(count)+f(ind+1,count+1,v);
+        return dp[ind][count]=max(p,np);
+    }
+    int maxSatisfaction(vector<int>& s) {
+        sort(s.begin(),s.end());
+        memset(dp,-1,sizeof(dp));
+        return (f(0,1,s));
+    }
+};
+
+                        f(0,1)
+                       /
+                    f(1,1)
+                    /    \
+                f(2,1)   f(2,2)
+                /    \
+            f(3,1)   f(3,2)
