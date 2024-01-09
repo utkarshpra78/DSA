@@ -1,0 +1,26 @@
+//https://leetcode.com/problems/target-sum/description/
+
+//494. Target Sum
+
+class Solution {
+public: 
+    map<pair<int,int>,int>mpp;
+    int f(int ind,int &target,int sum,vector<int>& v){
+        if(ind==v.size()){
+            if(sum==target){
+                return 1;
+            }else{
+                return 0;
+            }
+        }
+        if(mpp.find({ind,sum})!=mpp.end()){
+            return mpp[{ind,sum}];
+        }
+        int plus=v[ind]+f(ind+1,target,sum+v[ind],v);
+        int notplus=-v[ind]+f(ind+1,target,sum-v[ind],v);
+        return mpp[{ind,sum}]=plus+notplus;
+    }
+    int findTargetSumWays(vector<int>& nums, int target) {
+        return f(0,target,0,nums);
+    }
+};
