@@ -1,0 +1,40 @@
+//https://leetcode.com/problems/partition-equal-subset-sum/description/
+
+//416. Partition Equal Subset Sum
+
+class Solution {
+public:
+    int dp[205][20004];
+    bool f(int ind,int sum,int target,vector<int>&nums){
+        if(ind==nums.size()){
+            if(sum==target){
+                return 1;
+            }else{
+                return 0;
+            }
+        }
+        if(dp[ind][sum]!=-1){
+            return dp[ind][sum];
+        }
+        bool nottaken=f(ind+1,sum,target,nums);
+        bool taken=false; 
+            taken=f(ind+1,sum+nums[ind],target,nums);
+        
+        return dp[ind][sum]=taken|nottaken;
+    }
+
+    bool canPartition(vector<int>& nums) {
+        int n=nums.size();
+        int sum=0;
+        memset(dp,-1,sizeof(dp)); 
+        for(int i=0;i<n;i++){
+            sum+=nums[i];
+        }
+        if(sum%2){
+            return false;
+        }
+        else{
+            return f(0,0,sum/2,nums);
+        }
+    }
+};
