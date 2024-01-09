@@ -1,0 +1,28 @@
+//https://leetcode.com/problems/minimum-cost-for-tickets/description/
+
+//983. Minimum Cost For Tickets
+
+class Solution {
+public:
+int dp[400];
+    int f(int ind,vector<int>&days,vector<int>&cost){ 
+        if(ind>=days.size()){
+            return 0;
+        }
+        if(dp[ind]!=-1){
+            return dp[ind];
+        }
+        int ind1=lower_bound(days.begin(),days.end(),days[ind]+1)-days.begin(); 
+        int a=cost[0]+f(ind1,days,cost);
+        int id1=lower_bound(days.begin(),days.end(),days[ind]+7)-days.begin();
+        int b=cost[1]+f(id1,days,cost);
+        int id2=lower_bound(days.begin(),days.end(),days[ind]+30)-days.begin();
+        int c=cost[2]+f(id2,days,cost);
+        return dp[ind]=min({a,b,c});
+    }
+    int mincostTickets(vector<int>& days, vector<int>& costs) {
+        memset(dp,-1,sizeof(dp));
+        return f(0,days,costs);
+    }
+};
+//4 5 6 7 8 9 10
