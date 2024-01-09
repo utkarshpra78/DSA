@@ -1,0 +1,31 @@
+//https://leetcode.com/problems/longest-palindromic-subsequence/description/
+
+//516. Longest Palindromic Subsequence
+
+
+class Solution {
+public:
+    int dp[1005][1005];
+    int f(int i,int j,string &a,string &b){
+        if(i>=a.size() || j>=b.size()){
+            return 0;
+        }
+        if(dp[i][j]!=-1){
+            return dp[i][j];
+        }
+        int s=0;
+        if(a[i]==b[j]){
+            s=(1+f(i+1,j+1,a,b));
+        }
+        else{
+            s=max(f(i+1,j,a,b),f(i,j+1,a,b));
+        }
+        return dp[i][j]=s;
+    }
+    int longestPalindromeSubseq(string s) {
+        string u=s;
+        reverse(s.begin(),s.end());
+        memset(dp,-1,sizeof(dp));
+        return f(0,0,s,u);
+    }
+};
