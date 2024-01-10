@@ -1,0 +1,36 @@
+//https://leetcode.com/problems/maximize-the-profit-as-the-salesman/description/
+
+//2830. Maximize the Profit as the Salesman
+
+class Solution {
+public: 
+    int dp[100005];
+    int f(int ind,vector<int>&st,vector<vector<int>>&off){
+        if(ind>=off.size()){
+            return 0;
+        }
+        if(dp[ind]!=-1){
+            return dp[ind];
+        }
+        int np=f(ind+1,st,off);
+        int it=upper_bound(st.begin(),st.end(),off[ind][1])-st.begin(); 
+        int p=off[ind][2]+f(it,st,off);
+        return dp[ind]=max(p,np);
+    }
+
+    int maximizeTheProfit(int n, vector<vector<int>>& off) {
+        int m=off.size();
+        sort(off.begin(),off.end());
+        memset(dp,-1,sizeof(dp));
+        vector<int>st;
+        for(int i=0;i<off.size();i++){
+            st.push_back(off[i][0]);
+        }
+        return f(0,st,off);
+    }
+};
+/*
+    0 0 1
+
+
+*/
