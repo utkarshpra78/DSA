@@ -1,0 +1,30 @@
+//https://leetcode.com/problems/delete-and-earn/description/
+
+//740. Delete and Earn
+
+class Solution {
+public:
+    int dp[20005];
+    map<int,int>mpp;
+    int f(int ind,vector<int>&v){
+        if(ind==v.size()){
+            return 0;
+        }
+        if(dp[ind]!=-1){
+            return dp[ind];
+        }
+        int np=f(ind+1,v);
+        int it=upper_bound(v.begin(),v.end(),v[ind]+1)-v.begin();
+        int p=(mpp[v[ind]]*v[ind])+f(it,v);
+        return dp[ind]=max(p,np);
+    }
+    int deleteAndEarn(vector<int>& nums) {
+        int n=nums.size();
+        sort(nums.begin(),nums.end());
+        memset(dp,-1,sizeof(dp));
+        for(int i=0;i<n;i++){
+            mpp[nums[i]]++;
+        }
+        return  f(0,nums);
+    }
+};
