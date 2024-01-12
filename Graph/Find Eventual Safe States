@@ -1,0 +1,40 @@
+//https://leetcode.com/problems/find-eventual-safe-states/description/
+
+//802. Find Eventual Safe States
+
+class Solution {
+public:
+    bool f(int node,vector<vector<int>>&graph,vector<int>&vis,vector<int>&rec){
+        vis[node]=1;
+        rec[node]=1;
+        for(auto it:graph[node]){
+            if(!vis[it]){
+                if(f(it,graph,vis,rec)){
+                    return true;
+                }
+            }
+            else if(rec[it]){
+                return true;
+            }
+        }
+        rec[node]=0;
+        return false;
+    }
+    vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+        int n=graph.size();
+        vector<int>vis(n,0);
+        vector<int>rec(n,0);
+        for(int i=0;i<n;i++){
+            if(!vis[i]){
+                f(i,graph,vis,rec);
+            }
+        }
+        vector<int>ans;
+        for(int i=0;i<n;i++){
+            if(!rec[i]){
+                ans.push_back(i);
+            }
+        }
+        return ans;
+    }
+};
