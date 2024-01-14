@@ -1,0 +1,62 @@
+//https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/description/?envType=list&envId=53js48ke
+
+//1334. Find the City With the Smallest Number of Neighbors at a Threshold Distance
+
+class Solution {
+public:
+    vector<int> dij(int id,int n,vector<int>&vis,vector<pair<int,int>>adj[]){
+        vector<int>dis(n,1e9);
+        dis[id]=0;
+        set<pair<int,int>>st;
+        st.insert({0,id});
+
+        while(!st.empty()){
+            pair<int,int>p=*st.begin();
+            int wt=p.first;
+            int node=p.second;
+            st.erase(st.begin());
+            vis[node]=1;
+
+            for(auto it:adj[node]){
+                int nnode=it.first;
+                int nwt=it.second;
+                if(!vis[nnode]){
+                    if(dis[nnode]>dis[node]+nwt){
+                        dis[nnode]=dis[node]+nwt;
+                        st.insert({dis[nnode],nnode});
+                    }
+                }
+            }
+        }
+        return dis;
+    }
+
+    int findTheCity(int n, vector<vector<int>>& edges, int th) { 
+        vector<pair<int,int>>adj[n];
+        for(auto it:edges){
+            adj[it[0]].push_back({it[1],it[2]});
+            adj[it[1]].push_back({it[0],it[2]});
+        }
+
+        int maxi=INT_MAX;
+        int ans=-1;
+        for(int i=0;i<n;i++){
+            vector<int>vis(n,0);
+            vector<int>d=dij(i,n,vis,adj);
+            for(int i=0;i<n;i++){
+                cout<<d[i]<<" ";
+            }cout<<endl;
+            int c=0;
+            for(int j=0;j<n;j++){
+                if(d[j]<=th){
+                    c++;
+                }
+            }
+            if(c<=maxi){
+                ans=i;
+                maxi=c;
+            }
+        }
+        return ans;
+    }
+};
