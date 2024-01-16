@@ -1,0 +1,29 @@
+//https://leetcode.com/problems/most-stones-removed-with-same-row-or-column/description/
+
+//947. Most Stones Removed with Same Row or Column
+
+
+class Solution {
+public:
+    void dfs(int id,vector<vector<int>>&st,vector<int>&vis){
+        vis[id]=1;
+
+        for(int i=0;i<st.size();i++){
+            if(!vis[i] && (st[i][0]==st[id][0] || st[i][1]==st[id][1])){
+                dfs(i,st,vis);
+            }
+        }
+    }
+    int removeStones(vector<vector<int>>& st) {
+        int n=st.size();
+        vector<int>vis(n,0);
+        int c=0;
+        for(int i=0;i<n;i++){
+            if(!vis[i]){
+                dfs(i,st,vis);
+                c++;
+            }
+        }
+        return n-c;
+    }
+};
