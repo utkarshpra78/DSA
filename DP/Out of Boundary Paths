@@ -1,0 +1,36 @@
+//https://leetcode.com/problems/out-of-boundary-paths/description/?envType=daily-question&envId=2024-01-26
+
+//576. Out of Boundary Paths
+
+
+class Solution {
+public:
+    int M,N;
+    int mod=1e9+7;
+    int fx[4]={+1,-1,+0,+0};
+    int fy[4]={+0,+0,+1,-1};
+    int dp[51][51][51];
+    int f(int x,int y,int move){
+        if(x<0 || x>=M || y<0 || y>=N){
+            return 1;
+        }
+        if(move<=0){
+            return 0;
+        }
+        if(dp[x][y][move]!=-1){
+            return dp[x][y][move];
+        }
+        int a=0;
+        for(int i=0;i<4;i++){
+            int nr=x+fx[i];
+            int nc=y+fy[i];
+            a=(a+f(nr,nc,move-1))%mod; 
+        }
+        return dp[x][y][move]=a%mod;
+    }
+    int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
+        M=m,N=n;
+        memset(dp,-1,sizeof(dp));
+        return f(startRow,startColumn,maxMove);
+    }
+};
