@@ -1,0 +1,36 @@
+//https://leetcode.com/problems/maximum-good-subarray-sum/description/
+
+//3026. Maximum Good Subarray Sum
+
+class Solution {
+public:
+    long long maximumSubarraySum(vector<int>& v, int k) {
+        map<int,vector<int>>mpp;
+        int n=v.size();
+        vector<long long>pre(n+1,0);
+        for(int i=1;i<=n;i++){
+            pre[i]=pre[i-1]+v[i-1];
+        }
+        long long ans=-1e18;
+        for(int i=0;i<n;i++){
+            if(mpp.find(v[i]-k)!=mpp.end()){
+                for(auto it:mpp[v[i]-k]){
+                    long long sum=pre[i+1]-pre[it-1];
+                    ans=max(ans,sum);
+                }
+            }
+            if(mpp.find(v[i]+k)!=mpp.end()){
+                for(auto it:mpp[v[i]+k]){
+                    long long sum=pre[i+1]-pre[it-1];
+                    ans=max(ans,sum);
+                }
+            }
+            mpp[v[i]].push_back(i+1);
+        }
+        if(ans==-1e18){
+            return 0;
+        }else{
+            return ans;
+        }
+    }
+};
