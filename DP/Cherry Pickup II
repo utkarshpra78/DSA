@@ -1,0 +1,42 @@
+//https://leetcode.com/problems/cherry-pickup-ii/description/?envType=daily-question&envId=2024-02-11
+
+//1463. Cherry Pickup II
+
+
+class Solution {
+public:
+    int n,m;
+    int dp[71][71][71];
+    int f(int row,int col1,int col2,vector<vector<int>>&grid){
+        if(row==n){
+            return 0;
+        }
+        if(dp[row][col1][col2]!=-1){
+            return dp[row][col1][col2];
+        }
+        int cherry=grid[row][col1];
+        if(col1!=col2){
+            cherry+=grid[row][col2];
+        }
+        int ans=0;
+        for(int i=-1;i<=1;i++){
+            for(int j=-1;j<=1;j++){
+                int nrow=row+1;
+                int ncol1=col1+i;
+                int ncol2=col2+j;
+                if(ncol1>=0 && ncol1<m && ncol2>=0 && ncol2<m){
+                    ans=max(ans,f(nrow,ncol1,ncol2,grid));
+                }
+            }
+        }
+        return dp[row][col1][col2]=ans+cherry;
+    }
+    int cherryPickup(vector<vector<int>>& grid) {
+        n=grid.size();
+        m=grid[0].size();
+        memset(dp,-1,sizeof(dp));
+        return f(0,0,m-1,grid);
+    }
+};
+
+
