@@ -1,0 +1,52 @@
+//2472. Maximum Number of Non-overlapping Palindrome Substrings
+
+class Solution {
+public:
+    //is there an 0<i<j<n exists such that palindrome size is >=k
+    int sz;
+    int pal[2005][2005];
+    int cal[2005][2005];
+    bool ispal(int i,int j,string &s){
+        if(i>=j)return true;
+        if(cal[i][j]){
+            return pal[i][j];
+        }
+        cal[i][j]=true;
+        if(s[i]!=s[j]){
+            pal[i][j]=false;
+        }else{
+            pal[i][j]=ispal(i+1,j-1,s);
+        }
+        return pal[i][j];
+    } 
+
+    int dp[2005];
+    int f(int i,string s){
+        if(i==s.size()){
+            return 0;
+        }
+        if(dp[i]!=-1){
+            return dp[i];
+        } 
+        int a=f(i+1,s);
+        string x="";
+        for(int j=i;j<s.size();j++){
+            x+=s[j];
+            if(x.size()>=sz && ispal(i,j,s)){
+                a=max(a,1+f(j+1,s));
+            }
+        }
+        return dp[i] = a;
+    }
+
+    int maxPalindromes(string s, int k) {
+        sz=k;
+        if(k==1){
+            return s.size();
+        }
+        int n=s.size(); 
+        ispal(0,n-1,s);
+        memset(dp,-1,sizeof(dp));
+        return f(0,s);
+    }
+};
